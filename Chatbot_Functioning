@@ -1,0 +1,39 @@
+//Verify API Request
+fetch("/api/chat", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({ message: userMessage })
+})
+
+//Test API Manually
+curl -X POST http://localhost:3000/api/chat \
+-H "Content-Type: application/json" \
+-d '{"message":"Hello"}'
+
+//Check Backend Logs
+npm run dev
+# or
+pm2 logs
+
+//Authentication / API Key Check
+console.log(process.env.OPENAI_API_KEY);
+
+//Add Proper Error Handling (Frontend)
+try {
+  const res = await fetch("/api/chat", {...});
+  if (!res.ok) throw new Error("API failed");
+} catch (err) {
+  showError("Chatbot is temporarily unavailable");
+}
+
+//Increase Timeout
+server.timeout = 30000;
+
+Restart Services
+pm2 restart all
+# or
+docker-compose restart
+
+
